@@ -1,0 +1,26 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.pduggusa/dredd-mcp",
+  "title": "Dredd MCP",
+  "description": "Pre-flight security check for MCP servers. Blocks invocations against known-compromised dependencies, tool surface drift, remote URL hijacks, and permission escalation. HMAC-signed verdicts. Backed by 1.13M+ IOCs from the DugganUSA threat-intel corpus. Read-only.",
+  "version": "1.0.0",
+  "status": "active",
+  "icons": [
+    {
+      "src": "https://analytics.dugganusa.com/dredd-mcp-icon.svg",
+      "mimeType": "image/svg+xml",
+      "sizes": ["any"]
+    }
+  ],
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://analytics.dugganusa.com/api/v1/dredd/mcp"
+    }
+  ],
+  "repository": {
+    "url": "https://github.com/pduggusa/dredd-mcp",
+    "source": "github"
+  },
+  "websiteUrl": "https://analytics.dugganusa.com/api/v1/dredd"
+}
