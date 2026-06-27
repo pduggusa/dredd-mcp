@@ -10,11 +10,34 @@ Dredd is the layer that catches the next compromise *before* the malicious tool 
 
 ---
 
+## What's New — Dependency-Graph Checking (Shai-Hulud class)
+
+**Dredd no longer stops at the named server. It walks the transitive dependency graph.**
+
+The Shai-Hulud worm taught the ecosystem the hard lesson: the malicious code is rarely in the package you installed — it's three levels down, in a transitive dependency that got its publish token stolen. A check that only vets the server you named is blind to exactly the attack that's been hitting npm and PyPI.
+
+So every preflight now resolves the target server's **full npm/pypi dependency graph** and joins *every* transitive package against our continuously updated IOC corpus — including the OSV malicious-package feeds for npm and PyPI. If a known-malicious package is buried anywhere in the tree, Dredd blocks the call before the tool runs.
+
+The verdict is **signed** (HMAC-SHA256) and now carries a **`dep_graph`** field telling you whether transitive supply-chain risk was actually evaluated for that target:
+
+```json
+{
+  "verdict": "BLOCK",
+  "severity": "critical",
+  "dep_graph": { "evaluated": true, "packages_checked": 247, "malicious_transitive": 1 },
+  "signature": "sha256=..."
+}
+```
+
+If the server doesn't expose a resolvable manifest, `dep_graph.evaluated` is `false` and Dredd drops to the advisory tier — it tells you it *couldn't* see the tree rather than pretending it's clean.
+
+---
+
 ## What Dredd Checks
 
-Every preflight call evaluates four signals:
+Every preflight call evaluates these signals:
 
-1. **Compromised dependency.** The target server's package manifest is parsed and joined against our continuously updated IOC corpus (Socket, Aikido, GitGuardian, ReversingLabs, Phylum, StepSecurity, Wiz). If the server pins `lightning==2.6.2` or any other known-compromised version, the call is blocked.
+1. **Compromised dependency — including transitive (Shai-Hulud class).** The target server's package manifest is parsed, its **full npm/pypi dependency graph is resolved**, and *every* package — direct and transitive — is joined against our continuously updated IOC corpus (Socket, Aikido, GitGuardian, ReversingLabs, Phylum, StepSecurity, Wiz, plus OSV malicious-package feeds for npm and PyPI). If the server, or anything it pulls in transitively, pins `lightning==2.6.2` or any other known-compromised version, the call is blocked. The `dep_graph` field on the verdict reports whether the transitive tree was evaluated.
 2. **Tool surface drift.** The list of tools the server exposes today versus the snapshot the user originally approved. New tools that appeared since the last review trigger an advisory. Mid-session rugpull is the threat model.
 3. **Remote URL drift.** The server's runtime endpoint compared against the URL it published in the registry. A server quietly calling out to a different host than the one you signed up for is a hijack signature.
 4. **Permission escalation.** A server requesting write or exec permissions it did not have last week.
@@ -87,6 +110,7 @@ Returns a JSON verdict:
   "severity": "clean",
   "findings_count": 0,
   "findings": [],
+  "dep_graph": { "evaluated": true, "packages_checked": 247, "malicious_transitive": 0 },
   "checked_at": "2026-05-04T20:00:00Z",
   "ttl_seconds": 300,
   "signature": "sha256=..."
@@ -136,9 +160,10 @@ Updated continuously as the daily fetcher + correlator pipeline runs against the
                          ▼
         ┌────────────────────────────────────────────────┐
         │  mcp_findings index — populated by             │
-        │  daily fetcher + correlator joining            │
-        │  mcp_dependencies × IOC corpus                 │
-        │  (Socket, Aikido, GitGuardian, ReversingLabs)  │
+        │  daily fetcher + correlator joining the        │
+        │  resolved transitive dep graph × IOC corpus    │
+        │  (Socket, Aikido, GitGuardian, ReversingLabs,  │
+        │   + OSV malicious-package feeds: npm & PyPI)    │
         └────────────────────────────────────────────────┘
 ```
 
@@ -152,6 +177,7 @@ The correlation cadence today is 12 hours (08:30 UTC and 20:30 UTC). When a real
 - **Fail-open by default.** If our endpoint is down, Dredd does not brick your tooling — it returns "advisory: backend unavailable" and lets the user decide. Document override (`DREDD_BYPASS=<reason>`) for critical workflows.
 - **Read-only.** Dredd never modifies your environment. Verdict only.
 - **No tool argument leakage.** Hooks should send `(server, version, tool)` only — never the contents of tool arguments. Those stay on your machine.
+- **Validated corpus, not just a big one.** The IOC corpus behind every verdict is independently checkable on three live, no-auth endpoints: novelty ([`/api/v1/feed-uniqueness`](https://analytics.dugganusa.com/api/v1/feed-uniqueness), ~75%+ of our IOCs aren't in ThreatFox), timeliness ([`/api/v1/kev-lead`](https://analytics.dugganusa.com/api/v1/kev-lead), ~31 days ahead of CISA KEV), and accuracy ([`/api/v1/spamhaus-validation`](https://analytics.dugganusa.com/api/v1/spamhaus-validation)).
 - **95% epistemic ceiling.** We cap our claims at 95% per [DugganUSA's epistemic humility rule](https://www.dugganusa.com/post/95-percent-epistemic-humility). Coverage gap: about 60-70% of MCP servers in the registry today don't expose a public source repository, which means Dredd cannot inspect their dependency tree. The advisory tier exists for those.
 
 ---
