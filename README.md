@@ -177,7 +177,7 @@ The correlation cadence today is 12 hours (08:30 UTC and 20:30 UTC). When a real
 - **Fail-open by default.** If our endpoint is down, Dredd does not brick your tooling — it returns "advisory: backend unavailable" and lets the user decide. Document override (`DREDD_BYPASS=<reason>`) for critical workflows.
 - **Read-only.** Dredd never modifies your environment. Verdict only.
 - **No tool argument leakage.** Hooks should send `(server, version, tool)` only — never the contents of tool arguments. Those stay on your machine.
-- **Validated corpus, not just a big one.** The IOC corpus behind every verdict is independently checkable on three live, no-auth endpoints: novelty ([`/api/v1/feed-uniqueness`](https://analytics.dugganusa.com/api/v1/feed-uniqueness), ~75%+ of our IOCs aren't in ThreatFox), timeliness ([`/api/v1/kev-lead`](https://analytics.dugganusa.com/api/v1/kev-lead), ~31 days ahead of CISA KEV), and accuracy ([`/api/v1/spamhaus-validation`](https://analytics.dugganusa.com/api/v1/spamhaus-validation)).
+- **Validated corpus, not just a big one.** The IOC corpus behind every verdict is independently checkable on four live, no-auth endpoints: novelty ([`/api/v1/feed-uniqueness`](https://analytics.dugganusa.com/api/v1/feed-uniqueness), ~75%+ of our IOCs aren't in ThreatFox), timeliness ([`/api/v1/kev-lead`](https://analytics.dugganusa.com/api/v1/kev-lead), live kev-lead ledger vs CISA KEV), accuracy ([`/api/v1/spamhaus-validation`](https://analytics.dugganusa.com/api/v1/spamhaus-validation)), and liveness ([`/api/v1/feed-efficacy`](https://analytics.dugganusa.com/api/v1/feed-efficacy), opt-in consumer reports of when our indicators actually fire on real traffic — proof the feed is operationally live, not just large).
 - **95% epistemic ceiling.** We cap our claims at 95% per [DugganUSA's epistemic humility rule](https://www.dugganusa.com/post/95-percent-epistemic-humility). Coverage gap: about 60-70% of MCP servers in the registry today don't expose a public source repository, which means Dredd cannot inspect their dependency tree. The advisory tier exists for those.
 
 ---
@@ -200,7 +200,7 @@ Dredd is the 13th member of the [DugganUSA defender family](https://github.com/p
 - [`dugganusa-chrome`](https://github.com/pduggusa/dugganusa-chrome) — Chrome extension
 - [`dugganusa-action`](https://github.com/pduggusa/dugganusa-action) — GitHub Action
 
-Companion MCP server: **[Jeevesus](https://github.com/pduggusa)** — natural-language threat intelligence search across 17.9M documents. *Jeevesus saves. Dredd judges.*
+Companion MCP server: **[Jeevesus](https://github.com/pduggusa)** — natural-language threat intelligence search across 38M documents. *Jeevesus saves. Dredd judges.*
 
 ---
 

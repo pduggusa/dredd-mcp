@@ -2,6 +2,16 @@
 
 All notable changes to Dredd MCP are documented here.
 
+## [1.1.1] - 2026-06-30
+
+### Added
+- Documented the fourth live validation axis — Liveness (`/api/v1/feed-efficacy`) — in Trust Posture.
+
+### Changed
+- Refreshed corpus copy to ~38M documents across 65 indexes (Jeevesus companion line).
+- Reworded the Timeliness validation reference to point at the live kev-lead ledger instead of a fixed "~31 days ahead" average.
+- `server.json` version bumped to `1.1.1`.
+
 ## [1.1.0] - 2026-06-27
 
 ### Added

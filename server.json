@@ -3,7 +3,7 @@
   "name": "io.github.pduggusa/dredd-mcp",
   "title": "Dredd MCP",
   "description": "Pre-flight MCP security. Walks the transitive dependency graph (Shai-Hulud class) + checks tool drift. Signed verdict with dep_graph field. Dredd judges.",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "status": "active",
   "icons": [
     {
