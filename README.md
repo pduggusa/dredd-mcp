@@ -200,7 +200,7 @@ Dredd is the 13th member of the [DugganUSA defender family](https://github.com/p
 - [`dugganusa-chrome`](https://github.com/pduggusa/dugganusa-chrome) — Chrome extension
 - [`dugganusa-action`](https://github.com/pduggusa/dugganusa-action) — GitHub Action
 
-Companion MCP server: **[Jeevesus](https://github.com/pduggusa)** — natural-language threat intelligence search across 38M documents. *Jeevesus saves. Dredd judges.*
+Companion MCP server: **[Jeevesus](https://github.com/pduggusa)** — natural-language threat intelligence search across 68M documents. *Jeevesus saves. Dredd judges.*
 
 ---
 
