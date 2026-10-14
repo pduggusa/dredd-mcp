@@ -1,5 +1,9 @@
 # Dredd MCP — Pre-Flight Security for the MCP Ecosystem
 
+**You do you. I do me. We share contexts.**
+
+Everything is context now: data, transport, the TV in your living room. Share the context, never the core. Dredd judges what's about to cross into your agent before it runs: the server, its full dependency tree, and the CVEs published against it. Every verdict is signed, and you get an honest `unknown` when we couldn't see.
+
 > *"Jeevesus saves. Dredd judges."*
 
 **Dredd MCP** is a pre-invocation security check for the [Model Context Protocol](https://modelcontextprotocol.io) ecosystem. Before your agent calls a tool on any other MCP server, Dredd renders a verdict: `BLOCK`, `ADVISORY`, or `ALLOW`. Every verdict is HMAC-signed and cites the IOC or behavioral signal that drove the decision.
