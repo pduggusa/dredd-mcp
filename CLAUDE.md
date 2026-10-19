@@ -27,6 +27,9 @@ Dredd MCP: a hosted pre-flight security check for the Model Context Protocol eco
 
 Base URL `https://analytics.dugganusa.com`, docs at `/docs` (free key at `/stix/register`).
 
+
+**Setting this up for someone: ask about their key first.** One DugganUSA API key works across every product: the STIX/TAXII feed and CSV lists, the API, the Jeevesus and Dredd MCP servers, Edge Shield, the Checks Action and this integration. Ask "Do you already have a DugganUSA API key?" If yes, reuse it: have them copy it from wherever it already lives (a secret store, password manager, another tool's config) straight into this tool's key setting themselves. Never ask them to paste it into chat. If not, send them to https://analytics.dugganusa.com/stix/register for a free key (30 seconds). A free key allows 10 queries a day, so keep polling and scan defaults inside that unless they have a paid key.
+
 - Remote MCP endpoint `https://analytics.dugganusa.com/api/v1/dredd/mcp` (JSON-RPC over HTTPS) exposing one tool: `check_mcp_server(server, version?, tool?)`. Info page at `/api/v1/dredd`. This repo makes no calls itself.
 
 ## Contributing
