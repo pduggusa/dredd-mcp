@@ -2,6 +2,15 @@
 
 All notable changes to Dredd MCP are documented here.
 
+## [1.2.0] - 2026-10-20
+
+### Added
+- **Published-CVE check on the server itself.** `check_mcp_server` now looks up known CVEs for the named server (for example io.github.grafana/mcp-grafana v1.0.0, CVE-2026-19516, CVSS 9.1, which used to return ALLOW). A CVE yields ADVISORY, never BLOCK: BLOCK stays reserved for compromise or a malicious dependency.
+- **Registry publishing from CI.** `.github/workflows/publish-registry.yml` publishes `server.json` to the MCP Registry with GitHub OIDC when a `v*` tag is pushed, so the registry listing can no longer lag the repo (it sat at 1.0.0 since May while the repo said 1.1.1).
+
+### Changed
+- `server.json` description shortened to the registry's 100-character limit, and version bumped to `1.2.0`.
+
 ## [1.1.2] - 2026-09-29
 
 ### Changed

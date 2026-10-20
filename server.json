@@ -2,14 +2,16 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.pduggusa/dredd-mcp",
   "title": "Dredd MCP",
-  "description": "Dredd: pre-flight verdict on MCP servers and their full dependency trees (Shai-Hulud class) plus tool drift. Signed BLOCK/ADVISORY/ALLOW verdict with a dep_graph field.",
-  "version": "1.1.1",
+  "description": "Pre-flight verdict on MCP servers: known-bad identity, CVEs, dependency tree, tool drift. Signed.",
+  "version": "1.2.0",
   "status": "active",
   "icons": [
     {
       "src": "https://analytics.dugganusa.com/dredd-mcp-icon.svg",
       "mimeType": "image/svg+xml",
-      "sizes": ["any"]
+      "sizes": [
+        "any"
+      ]
     }
   ],
   "remotes": [
