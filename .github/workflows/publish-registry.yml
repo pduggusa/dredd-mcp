@@ -13,10 +13,15 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      # Pinned to a full commit SHA (v4). Checked with DugganUSA check-package (github-actions): allow, pinned.
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
       - name: Install mcp-publisher 1.7.6
+        # Hash pinned here, not fetched from the release page: a checksum downloaded next to the file
+        # only proves the two arrived together (see the 2026-10-19 OVHcloud CLI release swap).
         run: |
-          curl -fsSL "https://github.com/modelcontextprotocol/registry/releases/download/v1.7.6/mcp-publisher_linux_amd64.tar.gz" | tar xz mcp-publisher
+          curl -fsSL -o mcp-publisher.tar.gz "https://github.com/modelcontextprotocol/registry/releases/download/v1.7.6/mcp-publisher_linux_amd64.tar.gz"
+          echo "bcc96ca630cae4cf503b4550bd4a17462d42ad4819273bee56f4385bb059ddee  mcp-publisher.tar.gz" | sha256sum -c -
+          tar xzf mcp-publisher.tar.gz mcp-publisher
           ./mcp-publisher --version
       - name: Tag must match server.json version
         if: startsWith(github.ref, 'refs/tags/v')
