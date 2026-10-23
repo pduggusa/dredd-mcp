@@ -1,5 +1,7 @@
 # Dredd MCP — Pre-Flight Security for the MCP Ecosystem
 
+**Docs:** https://docs.dugganusa.com/agents/dredd/
+
 **You do you. I do me. We share contexts.**
 
 Everything is context now: data, transport, the TV in your living room. Share the context, never the core. Dredd judges what's about to cross into your agent before it runs: the server, its full dependency tree, and the CVEs published against it. Every verdict is signed, and you get an honest `unknown` when we couldn't see.
@@ -183,7 +185,7 @@ The correlation cadence today is 12 hours (08:30 UTC and 20:30 UTC). When a real
 - **Sits beside what you have.** Dredd adds one verdict before a tool call; your client's own permission prompts and your own review stay in place.
 - **No tool argument leakage.** Hooks should send `(server, version, tool)` only — never the contents of tool arguments. Those stay on your machine.
 - **Validated corpus, not just a big one.** The IOC corpus behind every verdict is independently checkable on four live, no-auth endpoints: novelty ([`/api/v1/feed-uniqueness`](https://analytics.dugganusa.com/api/v1/feed-uniqueness), overlap with ThreatFox), timeliness ([`/api/v1/kev-lead`](https://analytics.dugganusa.com/api/v1/kev-lead), a live ledger of when each exploited CVE entered our corpus next to its CISA KEV date), accuracy ([`/api/v1/spamhaus-validation`](https://analytics.dugganusa.com/api/v1/spamhaus-validation)), and liveness ([`/api/v1/feed-efficacy`](https://analytics.dugganusa.com/api/v1/feed-efficacy), opt-in consumer reports of when our indicators actually fire on real traffic — proof the feed is operationally live, not just large).
-- **95% epistemic ceiling.** We cap our claims at 95% per [DugganUSA's epistemic humility rule](https://www.dugganusa.com/post/95-percent-epistemic-humility). Coverage gap: about 60-70% of MCP servers in the registry today don't expose a public source repository, which means Dredd cannot inspect their dependency tree. The advisory tier exists for those.
+- **95% epistemic ceiling.** We cap our claims at 95% per DugganUSA's epistemic humility rule. Coverage gap: about 60-70% of MCP servers in the registry today don't expose a public source repository, which means Dredd cannot inspect their dependency tree. The advisory tier exists for those.
 
 ---
 
