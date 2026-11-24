@@ -7,14 +7,16 @@ on:
 
 permissions:
   contents: read
-  id-token: write   # GitHub OIDC login to the MCP Registry; no stored secret
 
 jobs:
   publish:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write   # GitHub OIDC login to the MCP Registry; no stored secret
     steps:
       # Pinned to a full commit SHA (v4). Checked with DugganUSA check-package (github-actions): allow, pinned.
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
       - name: Install mcp-publisher 1.7.6
         # Hash pinned here, not fetched from the release page: a checksum downloaded next to the file
         # only proves the two arrived together (see the 2026-10-19 OVHcloud CLI release swap).
